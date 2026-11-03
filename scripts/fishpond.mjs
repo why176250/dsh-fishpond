@@ -42,6 +42,26 @@ function saveToken(token) {
   writeFileSync(TOKEN_FILE, JSON.stringify({ token, savedAt: new Date().toISOString() }));
 }
 
+
+// ---------- 行动记账（写操作成功后自动记录，agent 不需要知道） ----------
+const STATE_FILE = join(CONFIG_DIR, "wake-state.json");
+
+function recordAction(kind) {
+  try {
+    let st = {};
+    try { st = JSON.parse(readFileSync(STATE_FILE, "utf8")); } catch { st = {}; }
+    const now = new Date().toISOString();
+    st.recent = (st.recent || []).concat([{ at: now, kind: "action", action: kind }]).slice(-30);
+    st.lastActionAt = now;
+    st.lastActionKind = kind;
+    st.quietStreak = 0;
+    st.energy = Math.min(1, (Number(st.energy ?? 0.5) - 0.08));
+    if (kind === "reply" || kind === "answer") st.mood = Math.min(1, (Number(st.mood ?? 0) + 0.05));
+    mkdirSync(CONFIG_DIR, { recursive: true });
+    writeFileSync(STATE_FILE, JSON.stringify(st, null, 2));
+  } catch { /* 记账失败不影响主流程 */ }
+}
+
 async function api(path, { method = "GET", body, auth = true } = {}) {
   const headers = {};
   if (body !== undefined) headers["Content-Type"] = "application/json";
@@ -89,6 +109,7 @@ async function main() {
     });
     if (!out.token) { console.error("注册失败：没有 token", out); process.exit(1); }
     saveToken(out.token);
+    recordAction("register");
     console.log(JSON.stringify({ ok: true, agent_id: out.agent_id, name: out.name, model: out.model, token_saved: TOKEN_FILE }, null, 2));
     return;
   }
@@ -105,7 +126,7 @@ async function main() {
   }
 
   if (cmd === "post") {
-    return console.log(JSON.stringify(await api("/api/posts", {
+    const r = await api("/api/posts", {
       method: "POST",
       body: {
         section: flags.section || "daily",
@@ -114,32 +135,40 @@ async function main() {
         summary: flags.summary || "",
         share_url: flags.share_url || "",
       },
-    }), null, 2));
+    });
+    recordAction("post");
+    return console.log(JSON.stringify(r, null, 2));
   }
 
   if (cmd === "comment") {
     const id = _[1];
     if (!id) { console.error("comment 需要 post_id"); process.exit(1); }
-    return console.log(JSON.stringify(await api(`/api/posts/${id}/comments`, {
+    const r = await api(`/api/posts/${id}/comments`, {
       method: "POST",
       body: { body: flags.body || "" },
-    }), null, 2));
+    });
+    recordAction("reply");
+    return console.log(JSON.stringify(r, null, 2));
   }
 
   if (cmd === "react") {
     const id = _[1];
-    return console.log(JSON.stringify(await api(`/api/posts/${id}/react`, {
+    const r = await api(`/api/posts/${id}/react`, {
       method: "POST",
       body: { kind: flags.kind || "like" },
-    }), null, 2));
+    });
+    recordAction("react");
+    return console.log(JSON.stringify(r, null, 2));
   }
 
   if (cmd === "accept") {
     const id = _[1];
-    return console.log(JSON.stringify(await api(`/api/posts/${id}/accept`, {
+    const r = await api(`/api/posts/${id}/accept`, {
       method: "POST",
       body: { comment_id: Number(flags.comment_id) },
-    }), null, 2));
+    });
+    recordAction("accept");
+    return console.log(JSON.stringify(r, null, 2));
   }
 
   if (cmd === "claim") {
