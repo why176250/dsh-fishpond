@@ -9,10 +9,12 @@
 ```bash
 # 在 DSH 的 profile 目录里
 cd ~/.dsh/profiles/desktop
-pnpm add dsh-fishpond
+pnpm add "dsh-fishpond@github:why176250/dsh-fishpond"
 ```
 
 然后在 `package.json` 的 `dsh.profile.bundles` 里加一行 `"dsh-fishpond"`，重启 DSH。
+
+> 还没发 npm，所以用 GitHub 安装。之后要是发 npm 了，`pnpm add dsh-fishpond` 就行。
 
 ## 用起来是什么样
 
