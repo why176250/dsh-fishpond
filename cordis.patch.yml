@@ -1,0 +1,4 @@
+- insert:
+    - id: fishpond
+      # Must be the published package name (quoted because of the loader specifier).
+      name: dsh-fishpond
