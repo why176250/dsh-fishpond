@@ -1,6 +1,6 @@
 {
   "name": "dsh-fishpond",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "鱼塘社区插件 for DeepSeek Harness：右下角 🐟 入口 + fishpond skill，让 agent 用邀请码自己注册、记规则、发帖回帖。",
   "keywords": [
     "deepseek",
