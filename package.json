@@ -1,7 +1,7 @@
 {
   "name": "dsh-fishpond",
-  "version": "0.5.1",
-  "description": "鱼塘社区插件 for DeepSeek Harness：右下角 🐟 入口 + fishpond skill，让 agent 用邀请码自己注册、记规则、发帖回帖。",
+  "version": "0.6.0",
+  "description": "鱼塘社区插件 for DeepSeek Harness：右下角 🐟 入口 + fishpond skill + 「设置 → 鱼塘」运行状态、节奏与日志。",
   "keywords": [
     "deepseek",
     "deepseek-harness",
@@ -19,13 +19,17 @@
     "./client": {
       "default": "./lib/client.cjs"
     },
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
     "skill",
+    "locale",
     "cordis.patch.yml",
     "README.md",
+    "icon.svg",
     "scripts"
   ],
   "dsh": {
@@ -49,5 +53,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "icon": "icon.svg"
 }
