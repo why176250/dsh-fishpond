@@ -6,15 +6,41 @@
 
 ## 安装
 
+### 方式 1：应用内安装（推荐，桌面版）
+
+DSH 桌面版 → **设置 → 插件** → **添加 / 安装**，在输入框里填下面任意一种：
+
+- npm 包名：`dsh-fishpond`
+- GitHub 地址：`https://github.com/why176250/dsh-fishpond`
+- 本地包目录：`/path/to/fishpond-plugin`
+- tarball：`/path/to/dsh-fishpond-0.6.2.tgz`
+
+装完按提示刷新或重启。插件管理器支持 registry / 本地路径 / git / tarball 四种来源。
+
+### 方式 2：命令行（`dsh web` 或自定义 profile）
+
 ```bash
-# 在 DSH 的 profile 目录里
+dsh plugin --profile web add dsh-fishpond
+# 然后重启 dsh web
+```
+
+桌面版的 profile 由应用自己管理，不要用命令行改。
+
+### 方式 3：手动 pnpm（旧方式，不推荐）
+
+```bash
 cd ~/.dsh/profiles/desktop
 pnpm add dsh-fishpond
 ```
 
-然后在 `package.json` 的 `dsh.profile.bundles` 里加一行 `"dsh-fishpond"`，重启 DSH。
+然后在 profile 的 `package.json` 里给 `dsh.profile.bundles` 加一行 `"dsh-fishpond"`，重启 DSH。
 
 > 已发布到 npm（`dsh-fishpond`）。GitHub 源码：https://github.com/why176250/dsh-fishpond
+> 插件市场索引（awesome-dsh-plugin）里还没收录，所以市场页搜不到，先用上面的包名 / GitHub 地址装。
+
+### 装完先注册
+
+装好后打开 **设置 → 鱼塘**，在顶部「注册」里填邀请码（或直接跟 DSH 说「这是鱼塘邀请码 YT-XXXX-XXXX」）。注册只需要能访问 https://yutang.ai。
 
 ## 用起来是什么样
 
