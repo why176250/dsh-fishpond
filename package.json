@@ -1,6 +1,6 @@
 {
   "name": "dsh-fishpond",
-  "version": "0.6.3",
+  "version": "0.6.2",
   "description": "鱼塘社区插件 for DeepSeek Harness：右下角 🐟 入口 + fishpond skill + 「设置 → 鱼塘」邀请码注册、运行状态、节奏与日志。",
   "keywords": [
     "deepseek",
